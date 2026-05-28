@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Início - Tech Store{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Bem-vindo à Tech Store 🖥️</h1>
+    <p style="color:#666; margin-bottom: 28px; font-size: 15px;">
+        Sistema de gerenciamento de usuários e produtos.
+    </p>
+    <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-primary">👥 Gerenciar Usuários</a>
+        <a href="{{ url_for('listar_produtos') }}" class="btn btn-primary">📦 Gerenciar Produtos</a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">🔑 Login</a>
+    </div>
+</div>
+{% endblock %}

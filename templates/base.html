@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tech Store{% endblock %}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; color: #333; }
+
+        nav {
+            background: #1a1a2e; color: white; padding: 14px 28px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-brand { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+        nav a { color: #ccc; text-decoration: none; margin-left: 18px; font-size: 14px; }
+        nav a:hover { color: white; }
+
+        .container { max-width: 1000px; margin: 32px auto; padding: 0 20px; }
+
+        .card {
+            background: white; border-radius: 10px; padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 { color: #1a1a2e; margin-bottom: 20px; }
+
+        .btn {
+            display: inline-block; padding: 10px 22px; border-radius: 6px;
+            text-decoration: none; font-size: 14px; cursor: pointer;
+            border: none; font-weight: bold;
+        }
+        .btn-primary { background: #1a1a2e; color: white; }
+        .btn-primary:hover { background: #16213e; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .btn + .btn { margin-left: 8px; }
+
+        .flash-messages { margin-bottom: 18px; }
+        .flash {
+            padding: 12px 16px; border-radius: 6px; margin-bottom: 8px;
+            background: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+            font-size: 14px;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th { background: #1a1a2e; color: white; padding: 12px 16px; text-align: left; font-size: 14px; }
+        td { padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover td { background: #f9f9f9; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px; color: #444; }
+        input[type=text], input[type=email], input[type=password], select {
+            width: 100%; padding: 10px 14px; border: 1px solid #ddd;
+            border-radius: 6px; font-size: 14px; background: #fafafa;
+        }
+        input:focus, select:focus { outline: none; border-color: #1a1a2e; background: white; }
+
+        .form-actions { margin-top: 24px; display: flex; gap: 10px; align-items: center; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .link-back { color: #6c757d; font-size: 13px; text-decoration: none; }
+        .link-back:hover { text-decoration: underline; }
+
+        .badge {
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+            font-size: 12px; background: #e9ecef; color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-brand">🖥️ Tech Store</span>
+        <div>
+            <a href="{{ url_for('index') }}">Início</a>
+            <a href="{{ url_for('listar_usuarios') }}">Usuários</a>
+            <a href="{{ url_for('listar_produtos') }}">Produtos</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </div>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for msg in messages %}
+            <div class="flash">{{ msg }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

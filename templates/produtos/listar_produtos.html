@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Produtos - Tech Store{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="header-row">
+        <h2>📦 Produtos</h2>
+        <a href="{{ url_for('inserir_produto') }}" class="btn btn-primary">+ Novo Produto</a>
+    </div>
+    {% if produtos %}
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in produtos %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.nome }}</td>
+                <td>R$ {{ "%.2f"|format(p.preco) }}</td>
+                <td>{{ p.estoque }}</td>
+                <td><span class="badge">{{ p.categoria }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:#999; margin-top:12px;">Nenhum produto encontrado.</p>
+    {% endif %}
+</div>
+{% endblock %}

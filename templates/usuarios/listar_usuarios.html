@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Usuários - Tech Store{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="header-row">
+        <h2>👥 Usuários</h2>
+        <a href="{{ url_for('inserir_usuario') }}" class="btn btn-primary">+ Novo Usuário</a>
+    </div>
+    {% if usuarios %}
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Perfil</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.nome }}</td>
+                <td>{{ u.email }}</td>
+                <td><span class="badge">{{ u.perfil }}</span></td>
+                <td>
+                    <form method="POST" action="{{ url_for('remover_usuario', id=u.id) }}"
+                          onsubmit="return confirm('Remover {{ u.nome }}?')">
+                        <button type="submit" class="btn btn-danger">🗑️ Remover</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:#999; margin-top:12px;">Nenhum usuário encontrado.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Novo Usuário - Tech Store{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 520px; margin: 0 auto;">
+    <div class="header-row">
+        <h2>➕ Novo Usuário</h2>
+        <a href="{{ url_for('listar_usuarios') }}" class="link-back">← Voltar</a>
+    </div>
+    <form method="POST" action="{{ url_for('inserir_usuario') }}">
+        <div class="form-group">
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome" name="nome" placeholder="Nome do usuário" required>
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+        </div>
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+        </div>
+        <div class="form-group">
+            <label for="perfil">Perfil</label>
+            <select id="perfil" name="perfil" required>
+                <option value="">Selecione um perfil</option>
+                {% for p in perfis %}
+                <option value="{{ p.id }}">{{ p.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

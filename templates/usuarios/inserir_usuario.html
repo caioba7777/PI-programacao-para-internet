@@ -1,37 +1,109 @@
 {% extends "base.html" %}
 {% block title %}Novo Usuário - Tech Store{% endblock %}
 {% block content %}
-<div class="card" style="max-width: 520px; margin: 0 auto;">
+<div class="card" style="max-width: 620px; margin: 0 auto;">
     <div class="header-row">
         <h2>➕ Novo Usuário</h2>
         <a href="{{ url_for('listar_usuarios') }}" class="link-back">← Voltar</a>
     </div>
     <form method="POST" action="{{ url_for('inserir_usuario') }}">
+
+        <h3 style="margin-bottom:14px; color:#444; font-size:15px;">Dados de Acesso</h3>
+
         <div class="form-group">
-            <label for="nome">Nome completo</label>
-            <input type="text" id="nome" name="nome" placeholder="Nome do usuário" required>
+            <label>Nome completo *</label>
+            <input type="text" name="nome" placeholder="Nome do usuário" required>
         </div>
         <div class="form-group">
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+            <label>E-mail *</label>
+            <input type="email" name="email" placeholder="email@exemplo.com" required>
         </div>
         <div class="form-group">
-            <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+            <label>Senha *</label>
+            <input type="password" name="senha" placeholder="••••••••" required>
         </div>
         <div class="form-group">
-            <label for="perfil">Perfil</label>
-            <select id="perfil" name="perfil" required>
+            <label>Perfil *</label>
+            <select name="perfil" required>
                 <option value="">Selecione um perfil</option>
                 {% for p in perfis %}
                 <option value="{{ p.id }}">{{ p.nome }}</option>
                 {% endfor %}
             </select>
         </div>
+
+        <h3 style="margin: 20px 0 14px; color:#444; font-size:15px;">Dados Pessoais</h3>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+                <label>CPF</label>
+                <input type="text" name="cpf" placeholder="000.000.000-00" maxlength="14">
+            </div>
+            <div class="form-group">
+                <label>Telefone</label>
+                <input type="text" name="telefone" placeholder="(00) 00000-0000" maxlength="20">
+            </div>
+        </div>
+
+        <h3 style="margin: 20px 0 14px; color:#444; font-size:15px;">Endereço</h3>
+
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:12px;">
+            <div class="form-group">
+                <label>CEP</label>
+                <input type="text" name="cep" id="cep" placeholder="00000-000" maxlength="9">
+            </div>
+            <div class="form-group">
+                <label>Endereço</label>
+                <input type="text" name="endereco" id="endereco" placeholder="Rua, Avenida...">
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 2fr 2fr; gap:12px;">
+            <div class="form-group">
+                <label>Número</label>
+                <input type="text" name="numero" placeholder="Ex: 100">
+            </div>
+            <div class="form-group">
+                <label>Complemento</label>
+                <input type="text" name="complemento" placeholder="Apto, Bloco...">
+            </div>
+            <div class="form-group">
+                <label>Bairro</label>
+                <input type="text" name="bairro" id="bairro" placeholder="Bairro">
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:2fr 1fr; gap:12px;">
+            <div class="form-group">
+                <label>Cidade</label>
+                <input type="text" name="cidade" id="cidade" placeholder="Cidade">
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <input type="text" name="estado" id="estado" placeholder="SP" maxlength="2">
+            </div>
+        </div>
+
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>
+
+<script>
+document.getElementById("cep").addEventListener("blur", function () {
+    const cep = this.value.replace(/\D/g, "");
+    if (cep.length !== 8) return;
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(r => r.json())
+        .then(d => {
+            if (d.erro) return;
+            document.getElementById("endereco").value = d.logradouro;
+            document.getElementById("bairro").value = d.bairro;
+            document.getElementById("cidade").value = d.localidade;
+            document.getElementById("estado").value = d.uf;
+        });
+});
+</script>
 {% endblock %}

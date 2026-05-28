@@ -13,6 +13,9 @@
                 <th>#</th>
                 <th>Nome</th>
                 <th>E-mail</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Cidade/UF</th>
                 <th>Perfil</th>
                 <th>Ações</th>
             </tr>
@@ -23,6 +26,9 @@
                 <td>{{ u.id }}</td>
                 <td>{{ u.nome }}</td>
                 <td>{{ u.email }}</td>
+                <td>{{ u.cpf or '-' }}</td>
+                <td>{{ u.telefone or '-' }}</td>
+                <td>{{ u.cidade or '-' }}{% if u.estado %}/{{ u.estado }}{% endif %}</td>
                 <td><span class="badge">{{ u.perfil }}</span></td>
                 <td>
                     <form method="POST" action="{{ url_for('remover_usuario', id=u.id) }}"

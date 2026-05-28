@@ -87,7 +87,9 @@ def listar_usuarios():
     cursor = conexao.cursor(dictionary=True)
     try:
         cursor.execute("""
-            SELECT u.id_usuario AS id, u.nome, u.email, p.nome AS perfil 
+            SELECT u.id_usuario AS id, u.nome, u.email, u.cpf, u.telefone,
+                   u.cep, u.endereco, u.numero, u.bairro, u.cidade, u.estado,
+                   p.nome AS perfil
             FROM usuarios u
             JOIN perfis p ON u.perfil_id = p.id_perfil
         """)
@@ -108,15 +110,27 @@ def inserir_usuario():
         email = request.form.get("email")
         perfil_id = request.form.get("perfil")
         senha = request.form.get("senha")
+        cpf = request.form.get("cpf")
+        telefone = request.form.get("telefone")
+        cep = request.form.get("cep")
+        endereco = request.form.get("endereco")
+        numero = request.form.get("numero")
+        complemento = request.form.get("complemento")
+        bairro = request.form.get("bairro")
+        cidade = request.form.get("cidade")
+        estado = request.form.get("estado")
+
         if not nome or not email or not perfil_id or not senha:
-            flash("Preencha todos os campos.")
+            flash("Preencha todos os campos obrigatórios.")
             return redirect(url_for("inserir_usuario"))
+
         cursor = conexao.cursor()
         try:
-            cursor.execute(
-                "INSERT INTO usuarios (nome, email, senha, perfil_id) VALUES (%s, %s, %s, %s)",
-                (nome, email, senha, perfil_id)
-            )
+            cursor.execute("""
+                INSERT INTO usuarios 
+                    (nome, email, senha, perfil_id, cpf, telefone, cep, endereco, numero, complemento, bairro, cidade, estado)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (nome, email, senha, perfil_id, cpf, telefone, cep, endereco, numero, complemento, bairro, cidade, estado))
             conexao.commit()
             flash("Usuário inserido com sucesso.")
             return redirect(url_for("listar_usuarios"))
@@ -126,6 +140,7 @@ def inserir_usuario():
             return redirect(url_for("inserir_usuario"))
         finally:
             cursor.close()
+
     cursor = conexao.cursor(dictionary=True)
     try:
         cursor.execute("SELECT id_perfil AS id, nome FROM perfis")

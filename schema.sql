@@ -4,7 +4,6 @@ CREATE DATABASE IF NOT EXISTS tech_store
 
 USE tech_store;
 
--- Remove as tabelas na ordem inversa das chaves estrangeiras para evitar erros de trava (Lock)
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS perfis;
 DROP TABLE IF EXISTS produtos;
@@ -30,13 +29,13 @@ CREATE TABLE produtos (
     categoria_id BIGINT UNSIGNED NOT NULL,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
+
     CONSTRAINT fk_produto_categoria
         FOREIGN KEY (categoria_id) REFERENCES categorias (id_categoria)
         ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- 4. TABELA: PERFIS (Criada antes de 'usuarios' para permitir a chave estrangeira)
+-- 4. TABELA: PERFIS
 CREATE TABLE perfis (
     id_perfil BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL UNIQUE,
@@ -51,6 +50,15 @@ CREATE TABLE usuarios (
     email VARCHAR(150) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
     perfil_id BIGINT UNSIGNED NOT NULL,
+    cpf VARCHAR(14),
+    telefone VARCHAR(20),
+    cep VARCHAR(9),
+    endereco VARCHAR(200),
+    numero VARCHAR(10),
+    complemento VARCHAR(100),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado CHAR(2),
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
